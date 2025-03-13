@@ -1,161 +1,217 @@
 
+---
 
-```
 # Crime Type and Occurrence Prediction
+
+This project is a Django-based web application designed to predict and analyze different types of crimes based on historical crime data. It includes multiple Django apps, data files (CSV/Excel), and templates for both the user-facing and service-provider interfaces.
+
+## Table of Contents
+1. [Overview](#overview)  
+2. [Features](#features)  
+3. [Technologies Used](#technologies-used)  
+4. [Installation & Setup](#installation--setup)  
+5. [Usage](#usage)  
+6. [Project Structure](#project-structure)  
+7. [Database](#database)  
+8. [License](#license)  
+9. [Contact](#contact)
+
+---
 
 ## Overview
 
-Crime Type and Occurrence Prediction is a machine learning project designed to analyze historical crime incident data and predict both the type of crime and its potential occurrence. By leveraging a Naive Bayes classifier along with rigorous data preprocessing and validation techniques, the project aims to provide actionable insights that can help in crime prevention and policy formulation. This tool was developed to process over 8,000 incident reports, refine classifications, and improve predictive accuracy over previous methods.
+The **Crime Type and Occurrence Prediction** system allows users (or administrators) to:
+- Upload and manage crime-related data.
+- Train machine learning models (e.g., Naive Bayes or other algorithms) to predict crime types or occurrences.
+- View visualizations and charts related to crime statistics.
+- Access various functionalities through distinct user roles (e.g., **Remote_User** vs. **Service_Provider**).
+
+This application is intended for researchers, law enforcement, or anyone interested in analyzing and predicting crime patterns.
+
+---
 
 ## Features
 
-- **Large-Scale Data Analysis:** Processes a dataset of over 8,000 crime incident reports.
-- **Naive Bayes Classification:** Implements a Naive Bayes model to classify crime types accurately.
-- **Rigorous Testing and Validation:** Conducts thorough testing to validate the model’s predictive performance.
-- **Iterative Improvement:** Continuously refines the model to achieve up to a 20% increase in prediction accuracy.
-- **Actionable Insights:** Provides refined classifications that can directly influence policy adjustments for crime prevention.
+- **Multiple User Roles**:  
+  - **Remote_User**: Can log in, register, view or search data, and interact with posted datasets.  
+  - **Service_Provider**: Can train models, view user data, generate charts, and make crime predictions.
+- **Machine Learning**: Integrates scripts (e.g., `Crime.py`) and data files (`crime.csv`, `offense_codes.csv`) to facilitate crime analysis and predictions.
+- **Database Management**: Django migrations for structured data, plus an optional SQL file for direct database setup.
+- **Template-Driven UI**: Organized HTML templates under `Template/htmls` for both **Remote_User** and **SProvider** views.
+
+---
 
 ## Technologies Used
 
-- **Programming Language:** Python
-- **Data Handling:** Pandas, NumPy
-- **Machine Learning:** Scikit-learn (Naive Bayes classifier)
-- **Data Visualization (optional):** Matplotlib
-- **Excel Data Processing:** Pandas' `read_excel` for handling the dataset in Excel format
+1. **Programming Language**: Python 3.7+  
+2. **Web Framework**: Django  
+3. **Database**: SQLite (default Django) or MySQL/PostgreSQL (if configured)  
+4. **Front-End**: HTML, CSS, and basic JavaScript for templates  
+5. **Data Files**: CSV/Excel (e.g., `crime.xlsx`, `crime.csv`, `offense_codes.csv`)  
+6. **IDE/Editor**: (Optional) PyCharm or VSCode — project includes a `.idea` folder for PyCharm
 
-## Dataset
+---
 
-The project uses an Excel dataset containing historical crime incident data:
+## Installation & Setup
 
-- **File:** `Crime_DataSets.xlsx`
-- **Details:** The dataset includes attributes such as crime type, date, time, location, and other relevant details required for effective analysis and prediction.
-
-### How to Use the Dataset
-
-1. **Placement:**  
-   Place the `Crime_DataSets.xlsx` file in the `data/` directory of the repository.
-2. **Reading the Data:**  
-   The data can be read directly using Pandas:
-   ```python
-   import pandas as pd
-   data = pd.read_excel("data/Crime_DataSets.xlsx")
-   ```
-3. **Optional Conversion:**  
-   You can convert the Excel data to CSV for further processing if needed:
-   ```python
-   data.to_csv("data/raw_incidents.csv", index=False)
-   ```
-
-## Methodology
-
-1. **Data Preprocessing:**  
-   - Clean and normalize the data.
-   - Handle missing values and outliers.
-   - Convert categorical variables into a numerical format suitable for model training.
-
-2. **Feature Engineering:**  
-   - Extract relevant features such as time, location, and historical patterns.
-   - Create new features that could help improve model performance.
-
-3. **Model Training:**  
-   - Train a Naive Bayes classifier on the preprocessed data.
-   - Use cross-validation techniques to evaluate the model.
-
-4. **Model Evaluation:**  
-   - Assess the model using appropriate metrics (e.g., accuracy, precision, recall).
-   - Refine the model iteratively to improve its predictive capabilities.
-
-5. **Prediction:**  
-   - Use the trained model to predict crime types and occurrences on new data.
-   - Output predictions to a CSV file for further analysis.
-
-## Installation
-
-1. **Clone the Repository:**
+1. **Clone the Repository**  
    ```bash
-   git clone https://github.com/gauravch-code/Crime-Type-and-Occurrence-Prediction.git
-   cd Crime-Type-and-Occurrence-Prediction
+   git clone https://github.com/YourUsername/Crime_Type_and_Occurrence_Prediction.git
+   cd Crime_Type_and_Occurrence_Prediction
    ```
 
-2. **Set Up a Virtual Environment:**
+2. **Create and Activate a Virtual Environment** (recommended)  
    ```bash
    python -m venv venv
+   # Windows
+   venv\Scripts\activate
+   # macOS/Linux
+   source venv/bin/activate
    ```
-   - **On Windows:**
-     ```bash
-     venv\Scripts\activate
-     ```
-   - **On macOS/Linux:**
-     ```bash
-     source venv/bin/activate
-     ```
 
-3. **Install Dependencies:**
+3. **Install Dependencies**  
    ```bash
    pip install -r requirements.txt
    ```
+   If you don’t have a `requirements.txt`, install Django manually:
+   ```bash
+   pip install django
+   ```
+
+4. **Apply Migrations**  
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
+
+5. **(Optional) Create a Superuser**  
+   ```bash
+   python manage.py createsuperuser
+   ```
+
+6. **Run the Development Server**  
+   ```bash
+   python manage.py runserver
+   ```
+   The application should be accessible at [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
+
+---
 
 ## Usage
 
-1. **Data Preprocessing:**  
-   Run the preprocessing script to clean and prepare the dataset:
-   ```bash
-   python scripts/preprocess.py --input data/Crime_DataSets.xlsx --output data/processed_incidents.csv
-   ```
+1. **Accessing the Admin Panel**  
+   - Go to `/admin` (e.g., [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)) and log in with your superuser credentials.
 
-2. **Model Training:**  
-   Train the Naive Bayes classifier using the processed data:
-   ```bash
-   python scripts/train.py --data data/processed_incidents.csv --model output/model.pkl
-   ```
+2. **Remote_User Functionalities**  
+   - Register or log in via the user interface (e.g., `login.html`, `Register1.html`).  
+   - Search or add dataset details (`Add_DataSet_Details.html`, `Search_DataSets.html`).  
+   - View your profile (`ViewYourProfile.html`).
 
-3. **Prediction:**  
-   Use the trained model to predict crime types for new incident data:
-   ```bash
-   python scripts/predict.py --model output/model.pkl --input data/new_incidents.csv --output output/predictions.csv
-   ```
+3. **Service_Provider Functionalities**  
+   - Log in via `serviceproviderlogin.html`.  
+   - Train machine learning models (`train_model.html`).  
+   - Predict crime type (`Predict_Crime_Type.html`).  
+   - Visualize data in charts (`charts.html`, `charts1.html`, `likeschart.html`, `dislikeschart.html`).  
+   - Manage user data (`View_Remote_Users.html`, `Download_Trained_DataSets.html`).
+
+4. **Data Files**  
+   - `crime.csv`, `crime.xlsx`, and `offense_codes.csv` are located in the main application folder.  
+   - You can replace or update these with your own data as needed.
+
+---
 
 ## Project Structure
 
+Below is a simplified version of your folder structure (omitting `__pycache__` and other generated files):
+
 ```
-Crime-Type-and-Occurrence-Prediction/
+C:.
+│   Crime_DataSets.xlsx
+│   DataStructure.txt
+│   README.md
 │
-├── data/
-│   ├── Crime_DataSets.xlsx       # Excel dataset with historical crime reports
-│   ├── raw_incidents.csv         # (Optional) CSV version of the raw data
-│   ├── processed_incidents.csv   # Data after preprocessing
-│   └── new_incidents.csv         # New data for predictions
+├── .idea/                          # IDE-specific folder (PyCharm)
+│   ├── Crime_Type_and_Occurrence_Prediction.iml
+│   ├── misc.xml
+│   ├── modules.xml
+│   └── workspace.xml
 │
-├── scripts/
-│   ├── preprocess.py             # Script for data cleaning and preprocessing
-│   ├── train.py                  # Script for model training
-│   └── predict.py                # Script for making predictions
+├── crime_typeand_occurrence_prediction/
+│   ├── crime.csv
+│   ├── Crime.py
+│   ├── crime.xlsx
+│   ├── manage.py
+│   ├── offense_codes.csv
+│   │
+│   ├── crime_typeand_occurrence_prediction/  # Main Django project folder
+│   │   ├── asgi.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   ├── wsgi.py
+│   │   └── __init__.py
+│   │
+│   ├── Remote_User/                # Django app for remote user functionality
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── forms.py
+│   │   ├── models.py
+│   │   ├── tests.py
+│   │   ├── views.py
+│   │   └── migrations/
+│   │
+│   ├── Service_Provider/           # Django app for service provider/admin
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── tests.py
+│   │   ├── views.py
+│   │   └── migrations/
+│   │
+│   └── Template/                   # HTML templates for both apps
+│       ├── htmls/
+│       │   ├── images/
+│       │   ├── media/
+│       │   ├── RUser/             # Templates for Remote_User
+│       │   └── SProvider/         # Templates for Service_Provider
+│       └── images/
+│           ├── bg.jpg
+│           ├── Login.jpg
+│           └── Register.jpg
 │
-├── output/
-│   ├── model.pkl                 # Serialized trained model
-│   └── predictions.csv           # Output predictions from the model
-│
-├── requirements.txt              # Python package dependencies
-├── README.md                     # Project documentation (this file)
-└── LICENSE                       # License information
+├── Database/
+│   └── crime_typeand_occurrence_prediction.sql
 ```
 
-## Contributing
+### Key Folders
 
-Contributions are welcome! If you have suggestions, improvements, or bug fixes, please follow these steps:
+- **`.idea/`**: PyCharm IDE settings (optional).  
+- **`crime_typeand_occurrence_prediction/`**: Main Django project folder containing:
+  - **`manage.py`**: Django management commands.  
+  - **`Remote_User/`**: App for user-related features.  
+  - **`Service_Provider/`**: App for admin/service provider features.  
+  - **`Template/`**: Contains HTML templates, images, and other static files.
+- **`Database/`**: Contains `.sql` dump for the database schema or data.
+- **`DataStructure.txt`**: (Optional) A text file describing your data structure.
+- **`Crime_DataSets.xlsx`**: Another dataset file (Excel format).
 
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Commit your changes and push the branch.
-4. Open a pull request explaining your changes.
+---
 
-## License
+## Database
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+- By default, Django uses SQLite. You can configure your `settings.py` to connect to another database (MySQL, PostgreSQL, etc.).
+- A SQL dump file (`crime_typeand_occurrence_prediction.sql`) is provided in the `Database/` folder if you prefer manually importing tables/data.
+- Use Django migrations for seamless database creation and updates:
+  ```bash
+  python manage.py makemigrations
+  python manage.py migrate
+  ```
+
+---
 
 ## Contact
 
-Developed by **Gaurav Chintakunta**  
-Email: [gchin6@uic.edu](mailto:gchin6@uic.edu)  
-GitHub: [gauravch-code](https://github.com/gauravch-code)
-```
+- **Author**: Gaurav Chintakunta  
+- **Email**: [gchin6@uic.edu](mailto:gchin6@uic.edu)  
+- **GitHub**: [gauravch-code](https://github.com/gauravch-code)
+
+For any questions or feedback, please open an issue on GitHub or reach out via email.
